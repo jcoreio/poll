@@ -1,5 +1,5 @@
 {
-  "name": "poll",
+  "name": "@jcoreio/poll",
   "version": "0.0.0-development",
   "description": "handy promised-based polling API",
   "main": "lib/index.js",
@@ -79,6 +79,6 @@
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
     "rimraf": "^2.6.0",
-    "semantic-release": "^6.3.6"
+    "semantic-release": "^8.2.0"
   }
 }
