@@ -39,7 +39,7 @@ describe('poll', function () {
     expect(error.message).to.match(/last error: Error: test!/i)
   })
   it('allows fn to manually pass', async () => {
-    const result = await poll(({attemptNumber, pass}: CallContext<number>) => {
+    const result = await poll(({attemptNumber, pass}: CallContext<number>): any => {
       if (attemptNumber === 3) pass(attemptNumber)
     }, 20).until((error, value) => value != null)
     expect(result).to.equal(3)
