@@ -23,7 +23,7 @@ function poll<T>(
   let attemptNumber = 0
   let until = (error: ?Error, result?: T) => !error
   let timeout: ?number
-  let timeoutId: ?number
+  let timeoutId: ?any
   let lastError: ?Error
 
   if (!Number.isFinite(interval) || interval < 0) {
