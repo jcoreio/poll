@@ -10,11 +10,11 @@ yet another promise-based poller (I didn't like the API design of others out the
 ## Example
 
 ```sh
-npm install --save poll
+npm install --save @jcoreio/poll
 ```
 
 ```js
-const poll = require('poll')
+const poll = require('@jcoreio/poll')
 const superagent = require('superagent')
 
 poll(() => superagent.get('http://google.com'), 1000)
