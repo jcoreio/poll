@@ -57,6 +57,7 @@ function poll<T>(
       }
 
       if (await until(error, result)) {
+        if (timeoutId != null) clearTimeout(timeoutId)
         if (error) reject(error)
         else resolve((result: any))
       }
