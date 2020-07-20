@@ -88,5 +88,6 @@ function poll<T>(
 
   return (promise: any)
 }
+poll.default = poll
 
 module.exports = poll

@@ -3,6 +3,9 @@
   "version": "0.0.0-development",
   "description": "handy promised-based polling API",
   "main": "lib/index.js",
+  "files": [
+    "lib/*"
+  ],
   "scripts": {
     "lint": "eslint src test",
     "lint:fix": "eslint --fix src test",
@@ -10,14 +13,14 @@
     "flow": "flow",
     "flow:coverage": "for file in src/**.js test/**.js; do echo $file; flow coverage $file; done",
     "flow:watch": "flow-watch -e js,js.flow,flowconfig --ignore lib/ --ignore node_modules/ --watch .flowconfig --watch src/ --watch test/",
-    "build": "rimraf lib && babel src --out-dir lib && flow-copy-source -v src/ lib",
+    "build": "rimraf 'lib/*.js' 'lib/*.js.flow' && babel src --out-dir lib && flow-copy-source -v src/ lib",
     "test": "NODE_ENV=production BABEL_ENV=test nyc --reporter=lcov --reporter=text mocha $npm_package_config_mocha",
     "test:watch": "mocha --watch $npm_package_config_mocha",
     "codecov": "nyc report --reporter=text-lcov > coverage.lcov; codecov",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "npm run lint && flow",
     "prepush": "npm test",
-    "prepublish": "npm run lint && flow && npm test && npm run build",
+    "prepublishOnly": "npm run lint && flow && tsc && npm test && npm run build",
     "open:coverage": "open coverage/lcov-report/index.html",
     "semantic-release": "semantic-release"
   },
@@ -78,7 +81,8 @@
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
     "rimraf": "^2.6.0",
-    "semantic-release": "^15.10.7"
+    "semantic-release": "^15.10.7",
+    "typescript": "^3.9.7"
   },
   "publishConfig": {
     "access": "public"
