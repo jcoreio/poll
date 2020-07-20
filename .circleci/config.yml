@@ -27,7 +27,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           name: build
-          command: yarn run prepublish
+          command: yarn run prepublishOnly
       - run:
           name: release
           command: yarn run semantic-release || true
