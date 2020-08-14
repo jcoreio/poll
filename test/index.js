@@ -38,6 +38,17 @@ describe('poll', function () {
     expect(error.message).to.match(/timed out/i)
     expect(error.message).to.match(/last error: Error: test!/i)
   })
+  it(`doesn't wrap error if wrapError: false`, async () => {
+    let numAttempts
+    let error
+    await poll(({attemptNumber, elapsedTime}: CallContext<void>) => {
+      numAttempts = attemptNumber + 1
+      if (elapsedTime < 500) throw new Error('test!')
+    }, 100).timeout(250).noWrapError().catch(err => error = err)
+    expect(numAttempts).to.equal(3)
+    if (!error) throw new Error('expected error to be thrown')
+    expect(error.message).to.equal('test!')
+  })
   it('allows fn to manually pass', async () => {
     const result = await poll(({attemptNumber, pass}: CallContext<number>): any => {
       if (attemptNumber === 3) pass(attemptNumber)

@@ -22,7 +22,7 @@ poll(() => superagent.get('http://google.com'), 1000)
   .then(() => console.log("You're connected to the internet!"))
 ```
 
-## `poll(fn, interval)`
+## `poll(fn, interval, [options])`
 
 Begins calling `fn` every `interval` milliseconds until the condition passes
 (which defaults to `fn` didn't throw an `Error` or return a rejected `Promise`).
@@ -56,3 +56,5 @@ You can specify a timeout (in milliseconds) by calling `.timeout` on the returne
 ```js
 poll(...).timeout(30000) // time out after 30 seconds
 ```
+
+If you call `.noWrapError()` on the returned `Promise`, it won't wrap rejection errors.

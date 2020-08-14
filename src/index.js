@@ -6,6 +6,7 @@ export type Poller<T> = Promise<T> & {
   cancel(): void;
   until(condition: UntilCondition<T>): Poller<T>;
   timeout(ms: number): Poller<T>;
+  noWrapError(): Poller<T>;
 }
 
 export type CallContext<T> = {
@@ -14,10 +15,9 @@ export type CallContext<T> = {
   fail(error: Error): void;
   pass(value: T): void;
 }
-
 function poll<T>(
   fn: (info: CallContext<T>) => T | Promise<T>,
-  interval: number
+  interval: number,
 ): Poller<T> {
   let fail, pass
   let attemptNumber = 0
@@ -25,6 +25,7 @@ function poll<T>(
   let timeout: ?number
   let timeoutId: ?any
   let lastError: ?Error
+  let wrapError: boolean = true
 
   if (!Number.isFinite(interval) || interval < 0) {
     throw new Error(`invalid interval: ${interval}`)
@@ -65,8 +66,12 @@ function poll<T>(
         const nextTime = now + interval
         if (timeout != null && nextTime - startTime > timeout) {
           let message = "timed out waiting for polling to succeed"
-          if (lastError) message += `; last error: ${lastError.stack}`
-          reject(new Error(message))
+          if (wrapError) {
+            if (lastError) message += `; last error: ${lastError.stack}`
+            reject(new Error(message))
+          } else {
+            reject(lastError || new Error(message))
+          }
         } else {
           const delay = Math.max(0, nextTime - Date.now())
           timeoutId = setTimeout(attempt, delay)
@@ -84,6 +89,10 @@ function poll<T>(
   }
   ;(promise: any).timeout = (ms: number) => {
     timeout = ms
+    return promise
+  }
+  ;(promise: any).noWrapError = () => {
+    wrapError = false
     return promise
   }
 
