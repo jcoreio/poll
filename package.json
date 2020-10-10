@@ -38,9 +38,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "release": {
-    "verifyConditions": "condition-circle"
-  },
   "sideEffects": false,
   "hooks": {
     "pre-commit": "toolchain pre-commit",
