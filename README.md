@@ -28,13 +28,15 @@ Begins calling `fn` every `interval` milliseconds until the condition passes
 (which defaults to `fn` didn't throw an `Error` or return a rejected `Promise`).
 
 Returns a `Promise` that resolves when polling finishes or fails, which may be:
-* when `fn` calls the `pass` method provided to it
-* when `fn` calls the `fail` method provided to it
-* when `fn` returns/resolves to a value or throws/rejects with an `Error` that
+
+- when `fn` calls the `pass` method provided to it
+- when `fn` calls the `fail` method provided to it
+- when `fn` returns/resolves to a value or throws/rejects with an `Error` that
   passes the condition
-* when a timeout is specified and `poll` times out waiting for any of the above
+- when a timeout is specified and `poll` times out waiting for any of the above
 
 `fn` will be called with a context object:
+
 ```js
 {
   attemptNumber: number, // the number of this call (starting from 0)
@@ -45,6 +47,7 @@ Returns a `Promise` that resolves when polling finishes or fails, which may be:
 ```
 
 You can change the condition by calling `.until` on the returned `Promise`:
+
 ```js
 poll(...).until((error, result) => result > 3)
 ```
@@ -53,6 +56,7 @@ poll(...).until((error, result) => result > 3)
 and `result` will be the value it resolved to or returned otherwise.
 
 You can specify a timeout (in milliseconds) by calling `.timeout` on the returned `Promise`:
+
 ```js
 poll(...).timeout(30000) // time out after 30 seconds
 ```
