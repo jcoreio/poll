@@ -12,7 +12,7 @@
   "config": {
     "mocha": "test/index.js --exit",
     "commitizen": {
-      "path": "cz-coventional-changelog"
+      "path": "cz-conventional-changelog"
     }
   },
   "repository": {
@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/jcoreio/poll#readme",
   "devDependencies": {
-    "@jedwards1211/js-toolchain": "^1.0.9",
+    "@jedwards1211/js-toolchain": "^1.0.0",
     "flow-bin": "^0.135.0",
     "husky": "^4.3.0",
     "typescript": "^3.9.7"
@@ -39,8 +39,11 @@
     "access": "public"
   },
   "sideEffects": false,
-  "hooks": {
-    "pre-commit": "toolchain pre-commit",
-    "commit-msg": "toolchain commitlint -E HUSKY_GIT_PARAMS"
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
+      "pre-commit": "toolchain pre-commit",
+      "commit-msg": "toolchain commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }
