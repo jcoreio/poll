@@ -15,7 +15,6 @@ jobs:
             yarn config set registry "https://registry.npmjs.org/"
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
             echo "registry=https://registry.npmjs.org/" >> .npmrc
-            if [[ -e .flowconfig ]]; then echo "server.max_workers=1" >> .flowconfig; fi
 
       - run:
           name: Install Dependencies
@@ -23,7 +22,9 @@ jobs:
 
       - run:
           name: build
-          command: yarn toolchain prepublishOnly
+          command: |
+            yarn toolchain flow-ci
+            yarn toolchain prepublishOnly
 
       - run:
           name: upload coverage
