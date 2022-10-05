@@ -47,7 +47,7 @@ function poll<T>(
         resolve(value)
       }
 
-      async function attempt(): Promise<void> {
+      async function _attempt(): Promise<void> {
         let result, error
         const now = Date.now()
         try {
@@ -81,6 +81,8 @@ function poll<T>(
           }
         }
       }
+
+      const attempt = () => _attempt().catch(() => {})
 
       attempt()
     }
