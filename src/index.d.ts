@@ -7,6 +7,7 @@ export type Poller<T> = Promise<T> & {
   cancel(): void
   until(condition: UntilCondition<T>): Poller<T>
   timeout(ms: number): Poller<T>
+  noWrapError(): Poller<T>
 }
 
 export type CallContext<T> = {
