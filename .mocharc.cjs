@@ -2,4 +2,5 @@
 const base = require('@jcoreio/toolchain-mocha/.mocharc.cjs')
 module.exports = {
   ...base,
+  exit: true,
 }
