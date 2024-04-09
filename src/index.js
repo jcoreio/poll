@@ -51,13 +51,13 @@ export class Poller<T> {
         const now = Date.now()
         try {
           result = await Promise.race([
+            manualPromise,
             this._fn({
               attemptNumber: attemptNumber++,
               elapsedTime: now - startTime,
               fail,
               pass,
             }),
-            manualPromise,
           ])
         } catch (err) {
           error = err
