@@ -5,7 +5,7 @@ export type UntilCondition<T> = (
   result?: T
 ) => boolean | Promise<boolean>
 
-export class Poller<T> {
+class Poller<T> {
   _fn: (info: CallContext<T>) => T | Promise<T>
   _until: (UntilCondition<T>) => boolean = (error: ?Error, result?: T) => !error
   _interval: number
@@ -137,6 +137,8 @@ export class Poller<T> {
   }
 }
 
+export type { Poller }
+
 export type CallContext<T> = {
   attemptNumber: number,
   elapsedTime: number,
@@ -149,6 +151,5 @@ function poll<T>(
 ): Poller<T> {
   return new Poller(fn, interval)
 }
-poll.default = poll
 
 export default poll
