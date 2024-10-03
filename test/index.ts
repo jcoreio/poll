@@ -1,22 +1,24 @@
-// @flow
-
 import { describe, it } from 'mocha'
 import poll from '../src'
 import { expect } from 'chai'
 
 import type { CallContext } from '../src'
 
+const noop = () => {
+  /* ignore */
+}
+
 describe('poll', function () {
   this.timeout(2000)
   it('throws when interval is missing', async () => {
-    // $FlowFixMe
-    expect(() => poll(() => {})).to.throw(Error)
+    // @ts-expect-error needs second argument
+    expect(() => poll(noop)).to.throw(Error)
   })
   it('throws when interval is NaN', async () => {
-    expect(() => poll(() => {}, NaN)).to.throw(Error)
+    expect(() => poll(noop, NaN)).to.throw(Error)
   })
   it('throws when interval is negative', async () => {
-    expect(() => poll(() => {}, -1)).to.throw(Error)
+    expect(() => poll(noop, -1)).to.throw(Error)
   })
   it('resolves when condition is met', async () => {
     let numAttempts

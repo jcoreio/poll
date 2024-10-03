@@ -1,19 +1,21 @@
-// @flow
-
 export type UntilCondition<T> = (
-  error: ?Error,
+  error: Error | null | undefined,
   result?: T
 ) => boolean | Promise<boolean>
 
+const noop = () => {
+  /* ignore */
+}
+
 class Poller<T> {
   _fn: (info: CallContext<T>) => T | Promise<T>
-  _until: (UntilCondition<T>) => boolean = (error: ?Error, result?: T) => !error
+  _until: UntilCondition<T> = (error: Error | null | undefined) => !error
   _interval: number
-  _timeout: ?number
-  _timeoutId: ?any
-  _wrapError: boolean = true
-  _canceled: boolean = false
-  _fail: (error: Error) => void
+  _timeout: number | null | undefined
+  _timeoutId: any
+  _wrapError = true
+  _canceled = false
+  _fail: ((error: Error) => void) | undefined
 
   constructor(fn: (info: CallContext<T>) => T | Promise<T>, interval: number) {
     if (!Number.isFinite(interval) || interval < 0) {
@@ -28,8 +30,9 @@ class Poller<T> {
     let attemptNumber = 0
     const startTime = Date.now()
     let timeoutId: any
-    let passed: ?[T], failed: ?[Error]
-    let fail: (error: Error) => void, pass: (value: T) => void
+    let passed: [T] | undefined, failed: [Error] | undefined
+    let fail: (error: Error) => void = noop,
+      pass: (value: T) => void = noop
     const manualPromise = new Promise<T>(
       (resolve: (value: T) => void, reject: (error: Error) => void) => {
         pass = (value: T) => {
@@ -46,8 +49,8 @@ class Poller<T> {
     try {
       // eslint-disable-next-line no-constant-condition
       while (true) {
-        let result: ?T = undefined,
-          error: ?Error = undefined
+        let result: T | undefined = undefined,
+          error: any = undefined
         const now = Date.now()
         try {
           result = await Promise.race([
@@ -67,7 +70,7 @@ class Poller<T> {
 
         if (await this._until(error, result)) {
           if (error) throw error
-          return result
+          return result as any
         }
         const nextTime = now + this._interval
         if (this._timeout != null && nextTime - startTime > this._timeout) {
@@ -140,10 +143,10 @@ class Poller<T> {
 export type { Poller }
 
 export type CallContext<T> = {
-  attemptNumber: number,
-  elapsedTime: number,
-  fail(error: Error): void,
-  pass(value: T): void,
+  attemptNumber: number
+  elapsedTime: number
+  fail(error: Error): void
+  pass(value: T): void
 }
 function poll<T>(
   fn: (info: CallContext<T>) => T | Promise<T>,
