@@ -47,7 +47,7 @@ class Poller<T> {
       }
     )
     try {
-      // eslint-disable-next-line no-constant-condition
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       while (true) {
         let result: T | undefined = undefined,
           error: any = undefined
@@ -94,28 +94,19 @@ class Poller<T> {
   }
 
   then<TResult1 = T, TResult2 = never>(
-    onfulfilled?:
-      | ((value: T) => TResult1 | PromiseLike<TResult1>)
-      | undefined
-      | null,
-    onrejected?:
-      | ((reason: any) => TResult2 | PromiseLike<TResult2>)
-      | undefined
-      | null
+    onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | null,
+    onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null
   ): Promise<TResult1 | TResult2> {
     return this._run().then(onfulfilled, onrejected)
   }
 
   catch<TResult = never>(
-    onrejected?:
-      | ((reason: any) => TResult | PromiseLike<TResult>)
-      | undefined
-      | null
+    onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null
   ): Promise<T | TResult> {
     return this._run().catch(onrejected)
   }
 
-  finally(onfinally?: (() => void) | undefined | null): Promise<T> {
+  finally(onfinally?: (() => void) | null): Promise<T> {
     return this._run().finally(onfinally)
   }
 
@@ -145,8 +136,8 @@ export type { Poller }
 export type CallContext<T> = {
   attemptNumber: number
   elapsedTime: number
-  fail(error: Error): void
-  pass(value: T): void
+  fail: (error: Error) => void
+  pass: (value: T) => void
 }
 function poll<T>(
   fn: (info: CallContext<T>) => T | Promise<T>,

@@ -29,23 +29,22 @@
   },
   "homepage": "https://github.com/jcoreio/poll#readme",
   "devDependencies": {
-    "@babel/plugin-syntax-flow": "^7.14.5",
-    "@babel/plugin-transform-react-jsx": "^7.22.15",
-    "@jcoreio/eslint-plugin-implicit-dependencies": "^1.1.1",
-    "@jcoreio/toolchain": "^4.9.1",
-    "@jcoreio/toolchain-circle": "^4.9.1",
-    "@jcoreio/toolchain-esnext": "^4.9.1",
-    "@jcoreio/toolchain-flow": "^4.9.1",
-    "@jcoreio/toolchain-mocha": "^4.9.1",
-    "@jcoreio/toolchain-semantic-release": "^4.9.1",
-    "@jcoreio/toolchain-typescript": "^4.9.1",
-    "@typescript-eslint/eslint-plugin": "^7.6.0",
-    "@typescript-eslint/parser": "^7.6.0",
+    "@jcoreio/toolchain": "^5.8.6",
+    "@jcoreio/toolchain-circle": "^5.8.6",
+    "@jcoreio/toolchain-esnext": "^5.8.6",
+    "@jcoreio/toolchain-flow": "^5.8.6",
+    "@jcoreio/toolchain-mocha": "^5.8.6",
+    "@jcoreio/toolchain-semantic-release": "^5.8.6",
+    "@jcoreio/toolchain-typescript": "^5.8.6",
+    "@types/chai": "^4.3.5",
+    "@types/mocha": "^10.0.1",
     "chai": "^4.4.1",
-    "eslint": "^8.56.0",
-    "eslint-plugin-flowtype": "^8.0.3",
-    "eslint-plugin-no-only-tests": "^3.1.0",
+    "eslint": "^9.17.0",
+    "globals": "^16.0.0",
+    "lint-staged": "^15.2.2",
     "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "prettier": "^3.4.2",
     "typescript": "^5.2.2"
   },
   "publishConfig": {
@@ -56,21 +55,24 @@
   "engines": {
     "node": ">=16"
   },
-  "packageManager": "pnpm@8.11.0",
+  "packageManager": "pnpm@10.6.5",
   "dependencies": {
-    "@babel/runtime": "^7.23.2"
+    "@babel/runtime": "^7.26.0"
   },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": {
+        "import": "./dist/index.d.mts",
+        "default": "./dist/index.d.ts"
+      },
       "import": "./dist/index.mjs",
       "default": "./dist/index.js"
     }
   },
   "@jcoreio/toolchain": {
-    "migratedVersion": "4.9.1"
+    "migratedVersion": "5.8.6"
   }
 }

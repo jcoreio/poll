@@ -30,13 +30,13 @@ describe('poll', function () {
   })
   it('rejects when condition times out', async () => {
     let numAttempts
-    let error
+    let error: any
     await poll(({ attemptNumber, elapsedTime }: CallContext<void>) => {
       numAttempts = attemptNumber + 1
       if (elapsedTime < 500) throw new Error('test!')
     }, 100)
       .timeout(250)
-      .catch((err) => (error = err))
+      .catch((err: unknown) => (error = err))
     expect(numAttempts).to.equal(3)
     if (!error) throw new Error('expected error to be thrown')
     expect(error.message).to.match(/timed out/i)
@@ -44,14 +44,14 @@ describe('poll', function () {
   })
   it(`doesn't wrap error if wrapError: false`, async () => {
     let numAttempts
-    let error
+    let error: any
     await poll(({ attemptNumber, elapsedTime }: CallContext<void>) => {
       numAttempts = attemptNumber + 1
       if (elapsedTime < 500) throw new Error('test!')
     }, 100)
       .timeout(250)
       .noWrapError()
-      .catch((err) => (error = err))
+      .catch((err: unknown) => (error = err))
     expect(numAttempts).to.equal(3)
     if (!error) throw new Error('expected error to be thrown')
     expect(error.message).to.equal('test!')
@@ -67,12 +67,12 @@ describe('poll', function () {
   })
   it('allows fn to manually fail', async () => {
     let numAttempts
-    let error
+    let error: any
     await poll(({ attemptNumber, elapsedTime, fail }: CallContext<void>) => {
       numAttempts = attemptNumber + 1
       if (elapsedTime < 50) throw new Error()
       else fail(new Error('manually failed!'))
-    }, 20).catch((err) => (error = err))
+    }, 20).catch((err: unknown) => (error = err))
     expect(numAttempts).to.equal(4)
     if (!error) throw new Error('expected error to be thrown')
     expect(error.message).to.equal('manually failed!')
@@ -85,22 +85,22 @@ describe('poll', function () {
     expect(value).to.equal(3)
   })
   it('throws if condition becomes true on error', async () => {
-    let error
+    let error: any
     await poll(({ attemptNumber }: CallContext<void>) => {
       if (attemptNumber === 3) throw new Error('done!')
     }, 20)
       .until((error) => Boolean(error))
-      .catch((err) => (error = err))
+      .catch((err: unknown) => (error = err))
     if (!error) throw new Error('expected error to be thrown')
     expect(error.message).to.equal('done!')
   })
   it('rejects when canceled', async () => {
-    let error
+    let error: any
     const promise = poll(() => {
       throw new Error()
     }, 20)
     promise.cancel()
-    await promise.catch((err) => (error = err))
+    await promise.catch((err: unknown) => (error = err))
     if (!error) throw new Error('expected error to be thrown')
     expect(error.message).to.match(/canceled/)
   })
